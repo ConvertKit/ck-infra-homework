@@ -6,6 +6,7 @@
 
   roles:
     - ruby-install
+    - awscli
 
   tasks:
     - name: Install dependencies
@@ -13,7 +14,6 @@
         name: "{{ item }}"
         state: present
       with_items:
-        - awscli
         - git-core
         - libsqlite3-dev
         - mysql-client-5.5

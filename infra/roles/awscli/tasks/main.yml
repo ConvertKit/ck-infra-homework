@@ -1,0 +1,16 @@
+---
+- name: Install awscli system dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - libpython-dev
+
+- name: Install awscli
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - rsa
+    - awscli
