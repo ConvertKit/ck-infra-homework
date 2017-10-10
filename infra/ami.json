@@ -6,15 +6,16 @@
   },
   "builders": [
     {
-      "name":            "{{user `basename`}}-{{timestamp}}",
-      "type":            "amazon-ebs",
-      "source_ami":      "{{user `parent_ami_id`}}",
-      "instance_type":   "t2.medium",
-      "communicator":    "ssh",
-      "ssh_username":    "ubuntu",
-      "ssh_timeout":     "10m",
-      "ami_name":        "{{user `basename`}}-{{timestamp}}",
-      "ami_description": "{{user `basename`}}-{{timestamp}}, built from {{user `parent_ami_name`}} ({{user `parent_ami_id`}}) on {{isotime}}",
+      "name":                 "{{user `basename`}}-{{timestamp}}",
+      "type":                 "amazon-ebs",
+      "source_ami":           "{{user `parent_ami_id`}}",
+      "instance_type":        "t2.medium",
+      "communicator":         "ssh",
+      "ssh_username":         "ubuntu",
+      "ssh_timeout":          "10m",
+      "ami_name":             "{{user `basename`}}-{{timestamp}}",
+      "ami_description":      "{{user `basename`}}-{{timestamp}}, built from {{user `parent_ami_name`}} ({{user `parent_ami_id`}}) on {{isotime}}",
+      "iam_instance_profile": "s3-read-only",
       "tags": {
         "Name": "{{user `basename`}}-{{timestamp}}"
       },
