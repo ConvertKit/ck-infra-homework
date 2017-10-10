@@ -1,0 +1,30 @@
+---
+- name: Create ruby-install installation directory
+  file:
+    path: "{{ ruby_install_path }}"
+    state: directory
+
+- name: Fetch ruby-install
+  get_url:
+    url: https://github.com/postmodern/ruby-install/archive/v0.6.1.tar.gz
+    dest: /tmp/v0.6.1.tar.gz
+
+- name: Unarchive ruby-install
+  unarchive:
+    src: /tmp/v0.6.1.tar.gz
+    dest: /usr/local/src
+    remote_src: yes
+
+- name: Install ruby-install
+  make:
+    target: install
+    chdir: "{{ ruby_install_path }}"
+
+- name: Build and install ruby 2.4.2
+  command: ruby-install ruby 2.4.2 --system
+
+- name: Install bundler
+  gem:
+    name: bundler
+    state: present
+    user_install: no

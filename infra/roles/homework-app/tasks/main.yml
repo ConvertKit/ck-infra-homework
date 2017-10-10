@@ -1,0 +1,46 @@
+---
+- name: Copy secrets from S3
+  aws_s3:
+    bucket: ck-homework-app-secrets
+    object: secrets.sh
+    dest: /home/ubuntu/.secrets
+    mode: get
+  become_user: ubuntu
+
+- name: Source secrets file
+  lineinfile:
+    dest: "/home/ubuntu/.profile"
+    state: present
+    line: "source .secrets"
+
+- name: Clone app repository
+  git:
+    repo: https://github.com/thejohnny/ck-infra-homework.git
+    dest: /home/ubuntu/app
+  become_user: ubuntu
+
+- name: Bundle gems
+  bundler:
+    state: present
+    deployment_mode: true
+    chdir: /home/ubuntu/app
+  become_user: ubuntu
+
+- name: Precompile assets
+  command: bundle exec rake assets:precompile
+  args:
+    chdir: /home/ubuntu/app
+  become_user: ubuntu
+
+- name: Copy upstart template
+  template:
+    src: homework-app.conf.j2
+    dest: /etc/init/homework-app.conf
+    mode: 0644
+
+- name: Set homework-app to started state
+  service:
+    name: homework-app
+    state: started
+
+
