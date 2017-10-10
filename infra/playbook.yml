@@ -1,0 +1,34 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    ruby_install_path: /usr/local/src/ruby-install-0.6.1
+
+  roles:
+    - ruby-install
+
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - awscli
+        - git-core
+        - libsqlite3-dev
+        - mysql-client-5.5
+        - libmysqlclient-dev
+        - nodejs
+        - npm
+
+    - name: symlink node to nodejs
+      file:
+        src: /usr/bin/nodejs
+        dest: /usr/bin/node
+        state: link
+
+    - name: Install yarn
+      npm:
+        name: yarn
+        global: yes
+        state: present
