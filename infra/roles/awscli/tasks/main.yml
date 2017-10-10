@@ -13,4 +13,5 @@
     state: latest
   with_items:
     - rsa
+    - boto3
     - awscli

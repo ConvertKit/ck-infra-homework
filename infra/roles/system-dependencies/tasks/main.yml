@@ -1,0 +1,12 @@
+---
+- name: Install system dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - build-essential
+    - git-core
+    - libsqlite3-dev
+    - mysql-client-5.5
+    - libmysqlclient-dev

@@ -1,0 +1,29 @@
+# /etc/init/puma.conf - Puma config
+# {{ ansible_managed }}
+
+description "homework-app"
+
+start on runlevel [2345]
+stop on runlevel [06]
+
+setuid ubuntu
+setgid ubuntu
+
+respawn
+respawn limit 3 30
+
+instance /home/ubuntu/app
+
+script
+. /home/ubuntu/.secrets
+
+exec /bin/bash <<'EOT'
+  # set HOME to the setuid user's home, there doesn't seem to be a better, portable way
+  export HOME="$(eval echo ~$(id -un))"
+
+  cd /home/ubuntu/app
+  logger -t puma "Starting server: homework-app"
+
+  exec bundle exec puma -C config/puma.rb
+EOT
+end script
