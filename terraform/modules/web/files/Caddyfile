@@ -1,0 +1,9 @@
+convertkit.asteroidbelt.io {
+  gzip
+  browse .
+  proxy / {
+    except /assets
+    transparent
+    upstream http://0.0.0.0:${port}
+  }
+}

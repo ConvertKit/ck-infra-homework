@@ -21,3 +21,6 @@
 /yarn-error.log
 
 .byebug_history
+*.tfvars
+terraform/.terraform/modules/*
+terraform/.terraform/plugins/*
